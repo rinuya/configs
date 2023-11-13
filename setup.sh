@@ -157,3 +157,21 @@ case "$WANT_I3" in
         echo "Skipping i3"
         ;;
 esac
+
+
+# BAT
+read -p "Install bat (batcat)? (Y/N) " WANT_BAT
+
+case "$WANT_BAT" in
+    [yY] | [yY][eE][sS])
+        echo "Installing bat..."
+        sudo apt install bat
+        # create symlink alias
+        mkdir -p ~/.local/bin
+        ln -s /usr/bin/batcat ~/.local/bin/bat
+        ;;
+    *)
+        echo "Skipping bat"
+        ;;
+esac
+

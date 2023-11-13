@@ -186,6 +186,9 @@ bar {
 }
 
 # Custom Keybinds and Settingsbindsym
-bindsym $mod+shift+x exec i3lock
+bindsym $mod+shift+x exec "i3lock -c 34084"
+
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 
 exec google-chrome
