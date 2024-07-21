@@ -60,33 +60,7 @@ case "$WANT_NVIM" in
 esac
 
 # Optional Nerd-Font
-printf "\n"
-read -p "Install the Hack Nerdfont? (may be outdated) (Y/N) " WANT_FONT
-
-case "$WANT_FONT" in 
-    [yY] | [yY][eE][sS])
-        echo "Installing Nerdfont Hack..."
-
-        if [ -d ".local/share/fonts"]
-        then
-            echo "Font directory already exists"
-        else 
-            echo "Creating font directory in .local/share"
-            mkdir .local/share/fonts
-        fi
-        echo "Downloading font into .local/share/fonts..."
-        curl -o .local/share/fonts/HackNerdFont-Regular.ttf https://github.com/rinuya/config-files/blob/main/HackNerdFont-Regular.ttf
-
-        if [ $OS == "Ubuntu" ]
-        then
-            fc-cache -fv
-        fi
-        echo "Please make sure to enable the font in the terminal preferences"
-        ;;
-    *)
-        echo "Skipping Nerdfont"
-        ;;
-esac
+printf "\nMake sure you use a Nerdfont to properly display everything!"
 
 ############################################################################
 #    ______                  __     ________                            
@@ -173,5 +147,22 @@ case "$WANT_BAT" in
     *)
         echo "Skipping bat"
         ;;
+esac
+
+# STARSHIP
+
+read -p "Install starship (NOTE: installing via script @ https://starship.rs/install.sh!!)? " WANT_STARSHIP
+
+case "$WANT_STARSHIP" in
+    [yY] | [yY][eE][sS])
+        echo "Installing starship..."
+        # Step 1: Install Starship
+        curl -sS https://starship.rs/install.sh | sh
+        # Step 2: Setup shell to use Starship (bash)
+        echo 'eval "$(starship init bash)"' >> ~/.bashrc
+        ;;
+    *)
+        echo "Skipping starship"
+        ;;:
 esac
 
