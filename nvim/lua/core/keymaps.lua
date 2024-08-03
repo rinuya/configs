@@ -34,6 +34,10 @@ vim.keymap.set('n', ',', 'i<CR><esc>', { desc='break line while in normal mode' 
 -- Miscellanious --
 -------------------
 
+vim.keymap.set("n", "<leader>fm", function()
+    require("conform").format { lsp_fallback = true }
+end, { desc = "[F]or[M]at files" })
+
 vim.keymap.set("n", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
 vim.keymap.set("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
 vim.keymap.set("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })

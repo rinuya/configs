@@ -1,10 +1,35 @@
-local lsp = require('lsp-zero').preset({})
+-- LSP SETUP
+require('mason').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = { 'gopls' }
+})
 
-lsp.on_attach(function(client, bufnr)
-  lsp.default_keymaps({buffer = bufnr})
+local lsp_zero = require('lsp-zero').preset({})
+
+lsp_zero.on_attach(function(client, bufnr)
+  lsp_zero.default_keymaps({buffer = bufnr})
 end)
 
-lsp.setup()
+require('lspconfig').gopls.setup({
+  settings = {
+    gopls = {
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    },
+  },
+})
+
+lsp_zero.setup()
+
+
+-- AUTOCOMPLETION SETUP (VSCode like)
 
 -- You need to setup `cmp` after lsp-zero
 local cmp = require('cmp')
@@ -19,27 +44,13 @@ local has_words_before = function()
 end
 
 cmp.setup({
-
-  -- ... Your other configuration ...
-
   mapping = {
-
-    -- ... Your other mappings ...
-
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
-      -- they way you will only jump inside the snippet region
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-
+    -- Auto fill active suggestion
+    ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+    -- Arrows to switch between auto fill options, only used when searching for sth specific
+    ["<Up>"] = cmp.mapping.select_prev_item(cmp_select),
+    ["<Down>"] = cmp.mapping.select_next_item(cmp_select),
+    -- not really used
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -49,9 +60,5 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s" }),
-
-    -- ... Your other mappings ...
   },
-
-  -- ... Your other configuration ...
 })
